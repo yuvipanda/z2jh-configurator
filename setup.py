@@ -12,6 +12,7 @@ setup(
         "django",
         "social-auth-core",
         "social-auth-app-django",
+        "django-reversion"
     ],
     include_package_data=True,
 )

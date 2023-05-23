@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "social_django",
+    "reversion",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -149,4 +150,4 @@ SOCIAL_AUTH_JUPYTERHUB_KEY = os.environ.get("JUPYTERHUB_CLIENT_ID")
 SOCIAL_AUTH_JUPYTERHUB_SECRET = os.environ.get("JUPYTERHUB_API_TOKEN")
 LOGIN_REDIRECT_URL = JUPYTERHUB_SERVICE_PREFIX + "admin/"
 
-STATIC_URL = JUPYTERHUB_SERVICE_PREFIX + "static"
+STATIC_URL = JUPYTERHUB_SERVICE_PREFIX + "static/"

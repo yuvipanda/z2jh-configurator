@@ -1,8 +1,8 @@
 from django.contrib import admin
+from reversion.admin import VersionAdmin
+
 
 from .models import Profile, Image, ProfileImage
-
-admin.site.register(Image)
 
 
 class ProfileImageInline(admin.StackedInline):
@@ -10,9 +10,13 @@ class ProfileImageInline(admin.StackedInline):
     extra = 1
 
 
-class ProfileAdmin(admin.ModelAdmin):
+class ProfileAdmin(VersionAdmin):
     inlines = [ProfileImageInline]
 
 
+class ImageAdmin(VersionAdmin):
+    model = Image
+
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Image, ImageAdmin)
 
