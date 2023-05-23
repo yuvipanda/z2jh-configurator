@@ -1,5 +1,6 @@
-from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.conf import settings
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return redirect(settings.JUPYTERHUB_SERVICE_PREFIX + "login/jupyterhub")
