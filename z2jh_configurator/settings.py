@@ -33,13 +33,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "social_django",
-    "z2jh_configurator.configurator",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "z2jh_configurator.configurator",
+    "z2jh_configurator.cleanup"
 ]
 
 MIDDLEWARE = [
