@@ -7,6 +7,11 @@ setup(
     license="3-BSD",
     author="yuvipanda",
     author_email="yuvipanda@gmail.com",
-    install_requires=['jupyterhub', 'django', 'social-auth-core', 'social-auth-app-django'],
+    install_requires=[
+        "jupyterhub",
+        "django",
+        "social-auth-core",
+        "social-auth-app-django",
+    ],
     include_package_data=True,
 )

@@ -30,17 +30,20 @@ class Image(models.Model):
         return f"{self.display_name} <{self.name}:{self.tag}>"
 
 
-
 class ProfileImage(models.Model):
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
     image = models.ForeignKey(Image, on_delete=models.CASCADE)
     is_default = models.BooleanField("Default image?")
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['profile', 'image'], name='unique_image_per_profile', violation_error_message="An image can be present only once in a profile"),
+            models.UniqueConstraint(
+                fields=["profile", "image"],
+                name="unique_image_per_profile",
+                violation_error_message="An image can be present only once in a profile",
+            ),
         ]
-                                
+
 
 class Profile(models.Model):
     display_name = models.CharField(max_length=256)
@@ -49,4 +52,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.display_name
-

@@ -1,7 +1,4 @@
 import sys
-import json
-import aiohttp
-from jupyterhub.spawner import SimpleLocalProcessSpawner
 
 c.JupyterHub.authenticator_class = "dummy"
 
@@ -12,8 +9,14 @@ c.JupyterHub.services = [
         "name": "configurator",
         "url": "http://127.0.0.1:9000",
         "oauth_redirect_uri": "http://127.0.0.1:8000/services/configurator/complete/jupyterhub/",
-        "command": [sys.executable, "-m", "uvicorn", "z2jh_configurator.asgi:application", "--port", "9000", "--reload"]
+        "command": [
+            sys.executable,
+            "-m",
+            "uvicorn",
+            "z2jh_configurator.asgi:application",
+            "--port",
+            "9000",
+            "--reload",
+        ],
     }
 ]
-
-
