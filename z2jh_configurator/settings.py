@@ -132,19 +132,21 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.associate_user",
     "social_core.pipeline.social_auth.load_extra_data",
     "social_core.pipeline.user.user_details",
+    # Set jupyterhub admin users to be superusers + staff, so they
+    # can access admin panel
     "z2jh_configurator.jupyterhub_auth.make_jh_admins_superusers",
 )
 
 AUTHENTICATION_BACKENDS = (
-    #'social_core.backends.github.GithubOAuth2',
     "z2jh_configurator.jupyterhub_auth.JupyterHubOAuth",
 )
 
 
+# Use as our base_url wherever possible. Does not end in a trailing slash
+JUPYTERHUB_SERVICE_PREFIX = os.environ.get("JUPYTERHUB_SERVICE_PREFIX", "")
+
 SOCIAL_AUTH_JUPYTERHUB_KEY = os.environ.get("JUPYTERHUB_CLIENT_ID")
 SOCIAL_AUTH_JUPYTERHUB_SECRET = os.environ.get("JUPYTERHUB_API_TOKEN")
-SOCIAL_AUTH_GITHUB_KEY = "4ee0d5e7a1d3b4a01bb3"
-SOCIAL_AUTH_GITHUB_SECRET = "ae4972ced103895fab4709c137bff0e25980cda7"
+LOGIN_REDIRECT_URL = JUPYTERHUB_SERVICE_PREFIX + "admin/"
 
-
-STATIC_URL = "services/configurator/static/"
+STATIC_URL = JUPYTERHUB_SERVICE_PREFIX + "static"
