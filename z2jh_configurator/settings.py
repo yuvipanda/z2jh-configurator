@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import sys
 import os
+import shutil
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -151,3 +153,8 @@ SOCIAL_AUTH_JUPYTERHUB_SECRET = os.environ.get("JUPYTERHUB_API_TOKEN")
 LOGIN_REDIRECT_URL = JUPYTERHUB_SERVICE_PREFIX + "admin/"
 
 STATIC_URL = JUPYTERHUB_SERVICE_PREFIX + "static/"
+
+if not shutil.which('skopeo'):
+    print('skopeo is required for this program to work')
+    print('See https://github.com/containers/skopeo/blob/main/install.md for how to install it')
+    sys.exit(1)
