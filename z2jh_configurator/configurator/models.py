@@ -1,5 +1,7 @@
 from textwrap import dedent
 from django.db import models
+from django.core.exceptions import ValidationError
+import subprocess
 
 
 class Image(models.Model):
@@ -29,6 +31,25 @@ class Image(models.Model):
         Eg 2022-01-05, kljhfahlfalksjdf32434. Recommend against using 'latest' tag"""
         ),
     )
+
+    def clean(self):
+        """
+        Validate that this image actually exists
+        """
+        # We use skopeo to check if this image exists. This is far more
+        # comprehensive than any python based library I have found. It takes
+        # a while (a few seconds!) but this is a single tenant application where
+        # new images are not added *that* frequently - so this is ok.
+        proc = subprocess.run([
+            'skopeo',
+            '--override-os', 'linux',
+            'inspect',
+            f'docker://{self.name}:{self.tag}'
+        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        if proc.returncode != 0:
+            raise ValidationError(f'Docker image {self.name}:{self.tag} not found')
+
 
     def __str__(self):
         return f"{self.display_name} <{self.name}:{self.tag}>"
