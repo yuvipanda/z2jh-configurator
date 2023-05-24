@@ -11,10 +11,16 @@ class ProfileImageInline(admin.StackedInline):
 
 
 class ProfileAdmin(VersionAdmin):
+    prepopulated_fields = {
+        "slug": ["display_name"]
+    }
     inlines = [ProfileImageInline]
 
 
 class ImageAdmin(VersionAdmin):
+    prepopulated_fields = {
+        "slug": ["display_name"]
+    }
     model = Image
 
 admin.site.register(Profile, ProfileAdmin)
