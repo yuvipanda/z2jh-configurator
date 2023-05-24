@@ -52,6 +52,17 @@ class Profile(models.Model):
     display_name = models.CharField(max_length=256)
     description = models.TextField()
     image = models.ManyToManyField(Image, through=ProfileImage)
+    is_default = models.BooleanField("Default selected profile?")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["is_default"],
+                condition=models.Q(is_default=True),
+                name="only_one_default_profile",
+                violation_error_message="Only one profile can be set as default, and a default profile already exists"
+            )
+        ]
 
     def __str__(self):
         return self.display_name
