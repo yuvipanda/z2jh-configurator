@@ -12,10 +12,10 @@ c.JupyterHub.services = [
         "command": [
             sys.executable,
             "-m",
-            "uvicorn",
-            "z2jh_configurator.asgi:application",
-            "--port",
-            "9000",
+            "gunicorn",
+            "z2jh_configurator.wsgi:application",
+            "--bind",
+            "127.0.0.1:9000",
             "--reload",
         ],
     }
