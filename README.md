@@ -26,3 +26,14 @@ provided by Infrastructure admins, and this makes sense as those are just
 *representations* of the underlying infrastructure that JupyterHub runs on.
 Simply adding a `NodeGroup` in the UI isn't going to help when the underlying
 nodes simply will not come up!
+
+## Configurable options
+
+JupyterHub admins can freely edit the following:
+
+1. List of profiles, names and descriptions
+2. List of images associated with each profile
+3. NodeGroups that each profile should spawn into
+
+Infrastructure admins provide *at deployment time* information about
+the *list* of NodeGroups available, reflecting what has been provisioned.
