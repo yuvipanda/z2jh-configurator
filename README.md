@@ -2,6 +2,21 @@
 
 A GUI based configurator for some admin tasks performed on a z2jh based JupyterHub
 
+## Goals
+
+The goal is to help offload *specific* admin work off Infrastructure
+Admins for *specific* kinds of JupyterHubs - primarily ones focused on
+*research*, where the end users have differing, heterogenous needs about
+their environment and resources.
+
+## Non-goals
+
+Being a *generic z2jh configuration application* is an explicit non-goal.
+If you are primarily targeting educational use cases where *Instructors*
+make choices for their users about environment and resources, or where
+*Infrastructure Admins* work closely with a specific set of users directly
+to be super responsive to their needs, this might not be useful for you.
+
 ## Why?
 
 The KubeSpawner `profileList` lets *end users* of the hub pick and choose
