@@ -54,13 +54,9 @@ The config file is expected to be in the following format:
     "node_selector": {
       "kubernetes-node-selector-key": "node-selector-value"
     },
-    "gpu_count": 0
   }
 ]
 ```
-
-The `gpu_count` set to a non-zero number will add an extra `kubespawner_override`
-automatically to enable GPUs for nodes placed there.
 
 Once you have this file, it can be imported into the database with:
 
@@ -71,3 +67,5 @@ python manage.py loadnodegroups nodegroups.json
 The `loadnodegroups` command is idempotent, and does not delete any nodegroups
 that no longer exist.
     
+The contents of this file will be validated with a JSON Schema to ensure
+useful error messages.

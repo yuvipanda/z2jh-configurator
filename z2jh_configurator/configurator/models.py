@@ -158,7 +158,6 @@ class NodeGroup(models.Model):
     slug = models.SlugField(unique=True)
     display_name = models.CharField(max_length=256)
     node_selector = models.JSONField(unique=True)
-    gpu_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.display_name
