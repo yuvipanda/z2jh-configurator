@@ -37,3 +37,37 @@ JupyterHub admins can freely edit the following:
 
 Infrastructure admins provide *at deployment time* information about
 the *list* of NodeGroups available, reflecting what has been provisioned.
+
+## Loading NodeGroups from file
+
+Infrastructure admins need to provide a list of NodeGroups that profiles can
+launch into. This is not editable in the Admin interface because it must match
+what is available in the Kubernetes cluster.
+
+The config file is expected to be in the following format:
+
+```json
+[
+  {
+    "slug": "node-name-slug",
+    "display_name": "Human Readable Name for this Node group",
+    "node_selector": {
+      "kubernetes-node-selector-key": "node-selector-value"
+    },
+    "gpu_count": 0
+  }
+]
+```
+
+The `gpu_count` set to a non-zero number will add an extra `kubespawner_override`
+automatically to enable GPUs for nodes placed there.
+
+Once you have this file, it can be imported into the database with:
+
+```bash
+python manage.py loadnodegroups nodegroups.json 
+```
+
+The `loadnodegroups` command is idempotent, and does not delete any nodegroups
+that no longer exist.
+    

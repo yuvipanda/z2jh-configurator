@@ -82,6 +82,7 @@ class Profile(models.Model):
     description = models.TextField()
     images = models.ManyToManyField(Image, through=ProfileImage)
     is_default = models.BooleanField("Default selected profile?")
+    nodegroups = models.ManyToManyField("NodeGroup", through="ProfileNodeGroup")
 
     def to_dict(self):
         """
@@ -109,11 +110,33 @@ class Profile(models.Model):
                     },
                     'default': image.is_default
                 }
-                d['profile_options']['image'][image.image.slug] = choice # FIXME
+                d['profile_options']["choices"]['image'][image.image.slug] = choice # FIXME
         elif len(images) == 1:
             image = images[0]
-            print(image)
             d['kubespawner_override']['image'] = f'{image.image.name}:{image.image.tag}'
+
+
+        nodegroups = self.nodegroups.through.objects.all()
+
+        if len(nodegroups) > 1:
+            # We offer a hcoice of nodegroups
+            d.setdefault('profile_options', {})
+            d['profile_options']['nodegroup'] = {
+                'display_name': 'Node Group',
+                'choices': {}
+            }
+
+            for ng in nodegroups:
+                choice = {
+                    'display_name': ng.nodegroup.display_name,
+                    'kubespawner_override': {
+                        'node_selector': ng.nodegroup.node_selector,
+                    },
+                    'default': ng.is_default
+                }
+                d['profile_options']['nodegroup']['choices'][ng.nodegroup.slug] = choice
+        elif len(nodegroups) == 1:
+            d['kubespawner_override']['node_selector'] = nodegroups[0].nodegroup.node_selector
 
         return d
 
@@ -129,3 +152,31 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.display_name
+
+
+class NodeGroup(models.Model):
+    slug = models.SlugField(unique=True)
+    display_name = models.CharField(max_length=256)
+    node_selector = models.JSONField(unique=True)
+    gpu_count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.display_name
+
+
+class ProfileNodeGroup(models.Model):
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
+    nodegroup = models.ForeignKey("NodeGroup", on_delete=models.CASCADE)
+    is_default = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.nodegroup.display_name}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["profile", "nodegroup"],
+                name="unique_nodegroup_per_profile",
+                violation_error_message="A nodegroup can be present only once in a profile",
+            ),
+        ]
